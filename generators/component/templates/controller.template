@@ -16,13 +16,13 @@ module.exports = function (deps) {
     },
 
     find: function (request, reply) {
-      <%= serviceName %>.find({})
+      <%= serviceName %>.find(request.params)
         .then(reply)
         .catch(reply);
     },
 
     findOne: function (request, reply) {
-      <%= serviceName %>.findOne(request.params.id)
+      <%= serviceName %>.findOne(request.params)
         .then(reply)
         .catch(reply);
     }

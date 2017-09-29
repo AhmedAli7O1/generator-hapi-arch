@@ -12,15 +12,8 @@ const beautify = require("gulp-beautify");
 const path = require('path');
 const loader = require('../../lib/templatesLoader');
 const templatesPath = path.join(__dirname, 'templates');
-const appOptions = {
-  props: {}
-};
 
 module.exports = class extends Generator {
-  initializing() {
-    
-  }
-  
   prompting() {
     // Have Yeoman greet the user.
     this.log(
@@ -91,11 +84,10 @@ module.exports = class extends Generator {
 
     npmPkgs = _.union(npmPkgs, selectedPkgsNames, selectedPkgsDeps);
     this.npmPkgs = npmPkgs;
-    appOptions.npmPkgs = npmPkgs;
   }
 
-  compose() {
-    this.composeWith(require.resolve('../plugin'), _.merge(this, { isSub: true }));
+  callSub() {
+    this.composeWith(require.resolve('../plugin'),{ npmPkgs: this.npmPkgs, isSub: true });
   }
 
   paths() {
@@ -109,15 +101,14 @@ module.exports = class extends Generator {
       preserve_newlines: true,
       max_preserve_newlines: 2,
       jslint_happy: false
-
     }));
 
     return loader(this, templatesPath);
   }
 
   install() {
-    /* Commented for Testing
-    return this.npmInstall(npmPkgs, {save: true});
-    */
+    // Commented for Testing
+    return this.npmInstall(this.npmPkgs, {save: true});
+    
   }
 };

@@ -30,7 +30,7 @@ module.exports = class extends Generator {
           type: 'input',
           name: 'pluginName',
           message: 'plugin name?',
-          default: 'pluginName'
+          default: 'exampleName'
         },
         {
           type: "list",
@@ -51,52 +51,65 @@ module.exports = class extends Generator {
       );
     }
 
-    prompts.push(
-      {
-        type: 'input',
-        name: 'compName',
-        message: 'component name?',
-        default: compType ? `Test${compType}` : 'TestController'
-      }
-    );
-
+    if (!this.options.isSub || (this.options.isSub && !this.options.isExample)) {
+      prompts.push(
+        {
+          type: 'input',
+          name: 'compName',
+          message: `the name of your${compType ? ` ${compType} ` : ' '}component?`,
+          default: compType ? `Example${compType}` : 'ExampleController'
+        }
+      );
+    }
 
     return this.prompt(prompts).then(props => {
       this.props = props;
-      // check if this is a sub generator to a plugin, set the plugin information.
-      if (this.options.isSub) {
-        this.props.pluginName = this.options.pluginInfo.props.pluginName;
-        this.props.compType = this.options.compType;
-      }
-      else {
-        this.props.compType = this.props.compTypeInput || this.props.compTypeList;
-      }
     });
   }
 
   writing() {
-    // format the template data
+
+    const { pluginData, compData } = formatGeneratorData({ props: this.props, options: this.options });
+
     const templateData = {
       serviceName: null,
       modelName: null,
       isSub: false
     };
 
-    if (this.options.isSub) {
-      templateData.serviceName = this.props.compName.replace('Controller', 'Service');
-      templateData.modelName = this.props.compName.replace('Service', '');
+    if (this.options.isSub && this.options.isExample) {
+      const capCompType = utils.capitalize(compData.compType);
+      templateData.serviceName = compData.compName.replace(capCompType, 'Service');
+      if (pluginData.hasModel) {
+        templateData.modelName = compData.compName.replace(capCompType, 'Model');
+      }
       templateData.isSub = true;
     }
 
     // format source and dest paths
-    const compType = this.props.compType || this.options.compType;
     const src = _(templates)
       .map('file')
-      .find(temp => temp === `${compType}.template`);
+      .find(temp => temp === `${compData.compType}.template`);
     const srcPath = src ? this.templatePath(src) : this.templatePath('other.template');
-    const destPath = this.destinationPath(`api/${this.props.pluginName}/${src ? compType + 's' : compType}/${this.props.compName}.js`);
+    const destPath = this.destinationPath(`api/${pluginData.pluginName}/${compData.compPath}/${compData.compName}.js`);
 
     // compile and copy the template to the dest folder
     this.fs.copyTpl(srcPath, destPath, templateData);
   }
 };
+
+function formatGeneratorData ({ props, options }) {
+  const geneData = {
+    pluginData: {},
+    compData: {}
+  };
+
+  geneData.compData.compType = props.compTypeInput || props.compTypeList || options.compType;
+  geneData.compData.compName = props.compName || 'Example' + utils.capitalize(geneData.compData.compType);
+  geneData.compData.compPath = props.compTypeInput ? geneData.compData.compType : `${geneData.compData.compType}s`;
+
+  geneData.pluginData.pluginName = props.pluginName || options.pluginInfo.pluginName;
+  geneData.pluginData.hasModel = options.hasModel;
+
+  return geneData;
+}

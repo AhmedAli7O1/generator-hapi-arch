@@ -1,0 +1,73 @@
+'use strict';
+
+module.exports = function (deps) {
+
+<% if (isSub) {%>
+  return function (lab) {
+
+    const {
+      describe,
+      it,
+      before,
+      after,
+      expect
+    } = lab;
+
+    const { <%= serviceName %> } = deps.services;
+  
+  <% if (modelName) { %>
+    const { <%= modelName %> } = deps.models;
+
+    before((done) => {
+      <%= modelName %>.create({ name: 'hapi', age: 1 })
+        .then(() => done())
+        .catch(done);
+    });
+  <% } %>
+
+    describe('math', () => {
+
+      before((done) => {
+
+        done();
+      });
+
+      after((done) => {
+
+        done();
+      });
+
+      it('returns true when 1 + 1 equals 2', (done) => {
+
+        expect(1 + 1).to.equal(2);
+        done();
+
+      });
+
+      it('returns true when 1 + 1 equals 2', (done) => {
+
+        expect(1 + 1).to.equal(2);
+        done();
+
+      });
+
+      it('name equal to Hapi', (done) => {
+        <%= serviceName %>.find({ age: 1 })
+          .then((res) => {
+            expect(res.name).to.equal('hapi');
+            done();
+          })
+          .catch((err) => {
+            done(err);
+          });
+      });
+
+    });
+
+  };
+<% } else { %>
+  // const { server, options, services } = deps;
+
+  return function (lab) {};
+<% } %>
+};

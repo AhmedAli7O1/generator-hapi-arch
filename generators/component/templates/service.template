@@ -2,10 +2,8 @@
 
 module.exports = function (deps) {
 
-  // const { server, options } = deps;
-
-<% if (modelName) {%>
-  const { <%= modelName %> } = deps.services;
+<% if (isSub && modelName) {%>
+  const { <%= modelName %> } = deps.models;
 
   return {
 
@@ -15,20 +13,40 @@ module.exports = function (deps) {
         .catch(reply);
     },
 
-    find: function () {
-      <%= modelName %>.find({})
+    find: function (criteria) {
+      <%= modelName %>.find(criteria)
         .then(reply)
         .catch(reply);
     },
 
-    findOne: function (id) {
-      <%= modelName %>.findOne({ _id: id })
+    findOne: function (criteria) {
+      <%= modelName %>.findOne(criteria)
         .then(reply)
         .catch(reply);
     }
 
   };
+<% } else if (isSub) { %>
+  // const { server, options } = deps;
+
+  return {
+
+    create: function (data) {
+      return Promise.resolve('created');
+    },
+
+    find: function () {
+      return Promise.resolve([{ name: 'hapi', age: 1 }]);
+    },
+
+    findOne: function (id) {
+      return Promise.resolve({ name: 'hapi', age: 1 });
+    }
+
+  };
 <% } else { %>
+  // const { server, options } = deps;
+
   return {};
 <% } %>
 };
