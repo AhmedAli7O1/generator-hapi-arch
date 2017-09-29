@@ -1,0 +1,16 @@
+parserOptions:
+  ecmaVersion: 6
+  sourceType: 'module'
+  ecmaFeatures:
+    jsx: true
+    impliedStrict: true
+env: { node: true }
+extends: "eslint:recommended"
+rules:
+  indent:
+    - error
+    - 2
+  semi: error
+  no-const-assign: error
+  no-var: error
+  prefer-const: error

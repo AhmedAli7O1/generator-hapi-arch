@@ -1,0 +1,15 @@
+{
+  "plugins": {
+    "blacklist": [
+      "pluginName"
+    ]
+  },
+  "archServices": <%- archServices %>,
+  "archPlugins": <%- archPlugins %>,
+  "standards": {
+    "env": [
+      "development",
+      "test"
+    ]
+  }
+}

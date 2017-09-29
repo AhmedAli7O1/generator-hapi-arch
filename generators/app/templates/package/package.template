@@ -1,0 +1,11 @@
+{
+  "name": "<%= appName %>",
+  "version": "<%= appVersion %>",
+  "description": "<%= appDesc %>",
+  "author": "<%= appAuthor %>",
+  "dependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js --env=test"
+  }
+}

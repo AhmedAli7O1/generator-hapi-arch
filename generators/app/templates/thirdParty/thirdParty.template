@@ -1,0 +1,42 @@
+'use strict';
+
+const pkg = require('./package.json');
+<%- deps %>
+
+/** define third party plugins */
+const plugins = [
+  <% if (installedPkgs.indexOf('good') >= 0) { %>
+  {
+    register: Good,
+    options: {
+      reporters: {
+        console: [
+          {
+            module: 'good-squeeze',
+            name: 'Squeeze',
+            args: [{
+              response: '*',
+              log: '*'
+            }]
+          },
+          { module: 'good-console' },
+          'stdout'
+        ]
+      }
+    }
+  },<% } %>
+  <% if (installedPkgs.indexOf('hapi-swagger') >= 0) { %>Inert,
+  Vision,
+  {
+    register: HapiSwagger,
+    options: {
+      info: {
+        title: pkg.title,
+        version: pkg.version
+      }
+    }
+  }<% } %>
+
+];
+
+module.exports = plugins;

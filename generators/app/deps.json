@@ -1,0 +1,45 @@
+{
+  "required": [
+    {
+      "name": "hapi",
+      "desc": "[ hapi ] A rich framework for building applications and services"
+    },
+    {
+      "name": "hapi-arch",
+      "desc": "[ hapi-arch ] Convention Control Framework"
+    },
+    {
+      "name": "lab",
+      "desc": "[ lab ] Node test utility"
+    }
+  ],
+  "optional": [
+    {
+      "name": "hapi-swagger",
+      "desc": "[ hapi-swagger ] auto generating swagger documentation",
+      "default": true,
+      "deps": ["inert", "vision"]
+    },
+    {
+      "name": "lodash",
+      "desc": "[ lodash ] A modern JavaScript utility library delivering modularity, performance & extras.",
+      "default": false
+    },
+    {
+      "name": "moment",
+      "desc": "[ moment ] Parse, validate, manipulate, and display dates and times in JavaScript.",
+      "default": false
+    },
+    {
+      "name": "good",
+      "desc": "[ good ] process monitoring",
+      "default": false,
+      "deps": ["good-squeeze", "good-console"]
+    },
+    {
+      "name": "mongoose",
+      "desc": "[ mongoose ] elegant mongodb object modeling for node.js",
+      "default": true
+    }
+  ]
+}

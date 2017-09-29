@@ -1,0 +1,34 @@
+'use strict';
+
+module.exports = function (deps) {
+
+  // const { server, options } = deps;
+
+<% if (modelName) {%>
+  const { <%= modelName %> } = deps.services;
+
+  return {
+
+    create: function (data) {
+      <%= modelName %>.create(data)
+        .then(reply)
+        .catch(reply);
+    },
+
+    find: function () {
+      <%= modelName %>.find({})
+        .then(reply)
+        .catch(reply);
+    },
+
+    findOne: function (id) {
+      <%= modelName %>.findOne({ _id: id })
+        .then(reply)
+        .catch(reply);
+    }
+
+  };
+<% } else { %>
+  return {};
+<% } %>
+};

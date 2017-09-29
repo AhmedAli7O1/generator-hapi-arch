@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Ahmed Ali",
+      "authorEmail": "contact@ahmedali.me",
+      "authorUrl": "ahmedali.me"
+    }
+  }
+}
