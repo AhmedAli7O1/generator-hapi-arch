@@ -4,26 +4,16 @@
 
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
-const yosay = require("yosay");
 const _ = require("lodash");
 const deps = require("./deps.json");
 const os = require("os");
 const beautify = require("gulp-beautify");
 const path = require('path');
-const loader = require('../../lib/templatesLoader');
+const loader = require(path.join(__dirname, '..', '..', 'lib', 'templatesLoader'));
 const templatesPath = path.join(__dirname, 'templates');
 
 module.exports = class extends Generator {
   prompting() {
-    // Have Yeoman greet the user.
-    this.log(
-      yosay(
-        "Welcome to the splendid " +
-          chalk.red("generator-hapi-arch") +
-          " generator!"
-      )
-    );
-
     const pkgs = _.map(deps.optional, "desc");
     const defaultPkgs = _(deps.optional)
       .filter("default")
